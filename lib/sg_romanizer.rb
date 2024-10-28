@@ -19,19 +19,17 @@ class SgRomanizer
   def romanize(arabic)
     ret = ""
 
-    [1000, 100, 10].each do |num|
-      portions = [
+    [1000, 100, 10].map do |num|
+      [
         num,
         (num * 0.9).to_i,
         (num * 0.5).to_i,
         (num * 0.4).to_i,
         (num * 0.1).to_i
       ]
-
-      portions.each do |portion|
-        ret += ROMAN_CHAR[portion] * (arabic / portion)
-        arabic %= portion
-      end
+    end.flatten.uniq.each do |num| # => [1000, 900, 500, 400, 100]
+      ret += ROMAN_CHAR[num] * (arabic / num)
+      arabic %= num
     end
 
     ret
